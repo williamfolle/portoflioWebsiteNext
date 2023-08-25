@@ -1,16 +1,24 @@
 "use client";
 import Image from 'next/image'
-import React from 'react'
 import{ motion } from "framer-motion"
 import  Link  from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 import { HiDownload } from "react-icons/hi";
 import { BsLinkedin } from "react-icons/bs";
 import { FaGithubSquare } from 'react-icons/fa';
+import { useSectionInView } from '@/lib/hooks';
+import { useActiveSectionContext } from '@/context/active-section-context';
 
 export default function Intro() {
+    
+   const { ref } = useSectionInView('Home', 0.5);
+   const { 
+        setActiveSection,
+        setTimeOfLastClick,
+   } = useActiveSectionContext();
+
   return (
-    <section className='mb-28 max-w-[50rem] text-center' >
+    <section ref={ref} id='home' className='mb-4 max-w-[50rem] text-center scroll-mt-[100rem]' >
         <div className="flex items-center justify-center">
             <div className='relative'>
                 <motion.div
@@ -37,7 +45,7 @@ export default function Intro() {
             </div>
         </div>
         
-        <motion.p className="mb-10 mt-4 px-4  text-2xl font-medium 
+        <motion.h1 className="mb-10 mt-4 px-4  text-2xl font-medium 
         !leading-[1.8] sm:text-4xl text-white text-shadow-lg"
         initial={{ opacity: 0, y: 100}}
         animate={{ opacity: 1, y: 0 }}
@@ -50,26 +58,42 @@ export default function Intro() {
             <span className="font-bold">4 years</span> of experience. I enjoy
             building <span className="italic">sites & apps</span>. My focus is{" "}
             <span className="underline">React (Next.js)</span>.
-         </motion.p>
+        </motion.h1>
 
-         <motion.div className='flex flex-col sm:flex-row items-center justify-center gap-2 px-4 text-lg font-medium'
+        <motion.div className='flex flex-col sm:flex-row items-center justify-center gap-4 px-4 text-lg font-medium'
          initial={{ opacity: 0, y: 100}}
          animate={{ opacity: 1, y: 0 }}
+         transition={{
+            delay: 0.1,
+         }}
          >
             
-            <Link href="#contact" className='bg-gray-900 text-white px-7 py-3 flex items-center gap-2 rounded-full'>
-                Contact me here <BsArrowRight/>{" "}
+            <Link href="#contact" className=' group bg-gray-900 text-white px-7 py-3 flex items-center 
+            gap-2 rounded-full outline-none focus:scale-110 hover:scale-x-105 hover:bg-gray-950 active:scale-x-105 
+            transition cursor-pointer border border-black/10' 
+            onClick={() => { 
+                setActiveSection("Contact");
+                setTimeOfLastClick(Date.now());
+             }}
+            >
+                Contact me here <BsArrowRight className="opacity-70 group-hover:translate-x-1 " />{" "}
             </Link>
 
-            <a className=' bg-white  px-7 py-3 flex items-center gap-2 rounded-full '>
-                Download CV <HiDownload/>
+            <a className='group bg-white  px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 
+            hover:scale-x-105 active:scale-x-105 transition cursor-pointer border border-black/10' href='/CV.pdf' download={true}
+            >
+                Download CV <HiDownload className="opacity-60 group-hover:translate-y-1 transition " />
             </a>
 
-            <a className=' bg-white text-gray-700 p-4 flex items-center gap-2 rounded-full '>
+            <a className=' bg-white text-gray-700 p-4 flex items-center gap-2 rounded-full focus:scale-[1.15] 
+            hover:scale-x-[1.15] hover:text-gray-950 active:scale-x-105  transition cursor-pointer border border-black/10'
+            href='https:linkedin.com/in/williamfolle' target='_blank'>
              <BsLinkedin/>
             </a>
 
-            <a className=' bg-white text-gray-700 p-4 flex items-center gap-2 rounded-full text-[1.35rem] '>
+            <a className=' bg-white text-gray-700 p-4 flex items-center gap-2 rounded-full text-[1.35rem] focus:scale-[1.15] 
+            hover:scale-x-[1.15] hover:text-gray-950 active:scale-x-105 transition cursor-pointer border border-black/10'
+            href='https://github.com/williamfolle' target='_blank'>
                 <FaGithubSquare/>
             </a>
          </motion.div>
@@ -77,3 +101,5 @@ export default function Intro() {
     </section>
   )
 }
+
+
